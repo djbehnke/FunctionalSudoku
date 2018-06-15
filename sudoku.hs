@@ -39,24 +39,14 @@ allBlankSudoku = Sudoku (replicate 9 (replicate 9 Nothing))
 -- | Tests whether a list of lists type sudoku is actually a 9x9 grid of Maybe Ints
 isSudoku::Sudoku->Bool
 isSudoku sud
-  | length(rows sud) == 9 = inner (rows sud)
+  | length(rows sud) == 9 = foldr (\x y -> (length x) == 9 && y) True (rows sud)
   | otherwise = False
-  where
-  inner (r:rs)
-    | rs == [] = True
-    | length r == 9 = inner rs
-    | otherwise = False
     
 -- | Tests if a given Sudoku has numbers in every "box"
 isSolved::Sudoku->Bool
 isSolved sud
-  | isSudoku sud = inner (rows sud)
+  | isSudoku sud = foldr ((\z w -> (foldr (\x y -> (isJust x) && y) True z) && w)) True (rows sud)
   | otherwise = False
-  where
-  inner (r:rs)
-    | rs == [] = True
-    | any (Nothing==) r = False
-    | otherwise = inner rs
 
 -- | Converts a row in the Sudoku to a string for printing
 makeLine:: [Maybe Int]->String
