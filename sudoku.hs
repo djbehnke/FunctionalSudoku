@@ -38,8 +38,8 @@ allBlankSudoku = Sudoku (replicate 9 (replicate 9 Nothing))
 
 -- | Tests whether a list of lists type sudoku is actually a 9x9 grid of Maybe Ints
 isSudoku::Sudoku->Bool
-isSudoku sudo
-  | length(rows sudo) ==9 = inner (rows sudo)
+isSudoku sud
+  | length(rows sud) == 9 = inner (rows sud)
   | otherwise = False
   where
   inner (r:rs)
@@ -49,8 +49,8 @@ isSudoku sudo
     
 -- | Tests if a given Sudoku has numbers in every "box"
 isSolved::Sudoku->Bool
-isSolved sudo
-  | isSudoku sudo = inner (rows sudo)
+isSolved sud
+  | isSudoku sud = inner (rows sud)
   | otherwise = False
   where
   inner (r:rs)
@@ -74,8 +74,8 @@ toString (Just a) = (show a) ++ " "
 
 -- | Prints out a grid of a given Sudoku
 printSudoku::Sudoku->  IO ()
-printSudoku sudo
-  | isSudoku sudo = inner (rows sudo) ""
+printSudoku sud
+  | isSudoku sud = inner (rows sud) ""
   | otherwise = putStrLn("Exception placeholder") -- I don't know how to do exceptions in Haskell
   where
   inner (r:rs) lines
