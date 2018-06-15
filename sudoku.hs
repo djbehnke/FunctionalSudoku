@@ -60,11 +60,7 @@ isSolved sud
 
 -- | Converts a row in the Sudoku to a string for printing
 makeLine:: [Maybe Int]->String
-makeLine ls = inner ls ""
-  where
-  inner (x:xs) str
-    | xs == [] = str ++ "\n"
-    | otherwise = inner (xs) (str ++ (toString x))
+makeLine ls = (foldr (++) "" (map toString ls))
 
 -- | Converts a Maybe Int to a String, either "z " for Ints or ". " for nothing
 toString::Maybe Int -> String
@@ -75,11 +71,12 @@ toString (Just a) = (show a) ++ " "
 -- | Prints out a grid of a given Sudoku
 printSudoku::Sudoku->  IO ()
 printSudoku sud
-  | isSudoku sud = inner (rows sud) ""
+  | isSudoku sud = putStrLn(unlines (map (\xs -> makeLine(xs)) (rows sud)))
   | otherwise = putStrLn("Exception placeholder") -- I don't know how to do exceptions in Haskell
-  where
-  inner (r:rs) lines
-    |rs == [] = (putStrLn (lines ++ makeLine(r)))
-    |otherwise = inner rs (lines ++ (makeLine(r)))
 
---readSudoku::FilePath -> IO Sudoku
+{- |readSudoku::FilePath -> IO Sudoku
+readSudoku f = inner (withFile f ReadMode) []
+  where
+  inner h ls
+    |hIsEOF = 
+    |hGetChar-}
